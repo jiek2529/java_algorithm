@@ -2,7 +2,16 @@ package com.sample.jiek.sorting;
 
 /**
  * Created by jiek on 11/06/2017.
- * 快速排序算法，
+ * 快速排序算法
+ *
+ * 但是Array.sort 还是比这个算法快，以1M数进行排序对比，
+ *
+ * initial list capacity：1048576 ,and mix times ：2
+ 12 <------ initList used time
+ 335 <------ mix 2 times used time
+
+ Sort with [ com.sample.jiek.sorting.QuickSort ] for 440 milliseconds
+ Sort with [ com.sample.jiek.sorting.MergeSort ] for 160 milliseconds
  */
 public class QuickSort extends SortableSwap {
     @Override

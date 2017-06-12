@@ -4,6 +4,8 @@ import java.util.Arrays;
 
 /**
  * Created by jiek on 11/06/2017.
+ *
+ * 这里写的排序算法的排序都是以升序为案例进行的。如果想做降序，需把算法的判断大小都根据情况做相应处理。
  */
 public abstract class SortableSwap implements Sortable {
 
