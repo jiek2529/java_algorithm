@@ -1,6 +1,12 @@
 package com.sample.jiek;
 
-import com.sample.jiek.sorting.*;
+import com.sample.jiek.searching.HalfIntervalSearch;
+import com.sample.jiek.searching.OrderSearch;
+import com.sample.jiek.searching.Searchable;
+import com.sample.jiek.sorting.DualPivotQuickSort;
+import com.sample.jiek.sorting.MergeSort;
+import com.sample.jiek.sorting.QuickSort;
+import com.sample.jiek.sorting.Sortable;
 
 import java.util.*;
 
@@ -16,27 +22,9 @@ public class Main {
     public static void main(String[] args) {
         Main mMain = new Main();
 
-        mMain.comparisonSortFlag = true;
-        MixList mMixList = new MixList();
-        for (int i = 0; i < 1; i++) {
-//            mMain.testSort(new BubbleSort());//冒泡排序；在进行64K的量级数据排序时，就非常的慢了。
-//            log(i+ " 排序后是否有序："+mMixList.checkOrderly(mMain.list));
-            mMain.testSort(new QuickSort());//快速排序
-//            log(i+ " 排序后是否有序："+mMixList.checkOrderly(mMain.list));
-            mMain.testSort(new MergeSort());
-            mMain.testSort(new DualPivotQuickSort());
-            /*mMain.testSort(new Sortable() {
-                @Override
-                public void sort(int[] list) {
-                    Arrays.sort(list);
-                }
-            });*/
-        }
-        mMain.comparisonSortFlag = false;
+        mMain.experimentSort();//实验排序算法
 
-        /*for (int i = 0; i < 10; i++) {
-            mMain.testForWhildEach_performance();
-        }*/
+        mMain.experimentSearch();//实现搜索算法
     }
 
     private static void log(String msg) {
@@ -53,6 +41,55 @@ public class Main {
             return;
         }
         System.out.println(Arrays.toString(list));
+    }
+
+    //实验排序算法
+    private void experimentSort() {
+        comparisonSortFlag = true;
+        for (int i = 0; i < 1; i++) {
+//            testSort(new BubbleSort());//冒泡排序；在进行64K的量级数据排序时，就非常的慢了。
+//            log(i+ " 排序后是否有序："+mMixList.checkOrderly(mMain.list));
+            testSort(new QuickSort());//快速排序
+//            log(i+ " 排序后是否有序："+mMixList.checkOrderly(mMain.list));
+            testSort(new MergeSort());
+            testSort(new DualPivotQuickSort());
+            /*testSort(new Sortable() {
+                @Override
+                public void sort(int[] list) {
+                    Arrays.sort(list);
+                }
+            });*/
+        }
+        comparisonSortFlag = false;
+
+        /*for (int i = 0; i < 10; i++) {
+            testForWhildEach_performance();
+        }*/
+    }
+
+    /**
+     * 实验顺序查询与折半查询方式的比较
+     */
+    private void experimentSearch() {
+        capacity = 1 << 28;//因查询本就消耗不大和机器性能过好，所以使用数据量相当大时进行查询实验。
+        if (list == null || list.length == 0) {
+            list = new MixList().initList(capacity);
+        } else {
+            new DualPivotQuickSort().sort(list);
+        }
+        Random random = new Random();
+        int searchTarget = 0, offset = 0;
+        searchTarget = random.nextInt(capacity) + offset;
+        for (int i = 0; i < 10; i++) {
+            testSearch(new OrderSearch(), list, searchTarget);
+            testSearch(new HalfIntervalSearch(), list, searchTarget);
+        }
+    }
+
+    private void testSearch(Searchable search, int[] list, int searchTarget) {
+        long start = System.currentTimeMillis();
+        search.searching(this.list, searchTarget);
+        log("search with [ " + search.getClass().getName() + " ] for " + (System.currentTimeMillis() - start) + " milliseconds");
     }
 
     /**
@@ -112,7 +149,6 @@ public class Main {
         logList(list);
         log(System.currentTimeMillis() - start + " <------ mix " + mixTimes + " times used time\n");
     }
-
 
 
     /**
