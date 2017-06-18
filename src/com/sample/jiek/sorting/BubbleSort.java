@@ -2,7 +2,7 @@ package com.sample.jiek.sorting;
 
 /**
  * Created by jiek on 09/06/2017.
- * reference: https://en.wikipedia.org/wiki/Bubble_sort
+ * @See https://en.wikipedia.org/wiki/Bubble_sort
  * <p>
  * 耗时在循环次数、循环方法（for|while）、交换次数（交换是最耗时间，约9成时间耗在交换数据上）
  * <p>
@@ -30,7 +30,7 @@ public class BubbleSort extends SortableSwap {
      */
     public void sortWithFor(int[] list) {
         for (int i = list.length - 1; i > 0; i--) {//循环列表长减一次。
-            for (int j = 0; j < i; j++) {//多最左向右比较交换
+            for (int j = 0; j < i; j++) {//从最左向右比较交换
                 if (list[j + 1] < list[j]) {
                     swap(list, j, j + 1);
                 }

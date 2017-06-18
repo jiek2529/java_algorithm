@@ -3,10 +3,7 @@ package com.sample.jiek;
 import com.sample.jiek.searching.HalfIntervalSearch;
 import com.sample.jiek.searching.OrderSearch;
 import com.sample.jiek.searching.Searchable;
-import com.sample.jiek.sorting.DualPivotQuickSort;
-import com.sample.jiek.sorting.MergeSort;
-import com.sample.jiek.sorting.QuickSort;
-import com.sample.jiek.sorting.Sortable;
+import com.sample.jiek.sorting.*;
 
 import java.util.*;
 
@@ -14,8 +11,8 @@ import java.util.*;
  * Created by jiek on 09/06/2017.
  */
 public class Main {
-    int capacity = 1 << 15,  //创建数组容量申明
-            mixTimes = 1 << 1;//打乱数据的轮数，每轮进行数据容量次随机调换。
+    int capacity = 1 << 4,  //创建数组容量申明
+            mixTimes = 1 << 2;//打乱数据的轮数，每轮进行数据容量次随机调换。
     boolean comparisonSortFlag = false;//如果进行多算法间效率对比，此值设置为true。以保证多个算法的原始数组相同。
     private int[] list, clone_mixList;//clone_mixList是用于进行多算法对比时用的克隆初始数组。默认不使用。
 
@@ -24,7 +21,7 @@ public class Main {
 
         mMain.experimentSort();//实验排序算法
 
-        mMain.experimentSearch();//实现搜索算法
+//        mMain.experimentSearch();//实现搜索算法
     }
 
     private static void log(String msg) {
@@ -46,19 +43,23 @@ public class Main {
     //实验排序算法
     private void experimentSort() {
         comparisonSortFlag = true;
-        for (int i = 0; i < 1; i++) {
+        for (int i = 0; i < 1; i++) {//以下以排序算法的效率进行先后的。
 //            testSort(new BubbleSort());//冒泡排序；在进行64K的量级数据排序时，就非常的慢了。
+//            testSort(new InsertSort());//插入排序；
 //            log(i+ " 排序后是否有序："+mMixList.checkOrderly(mMain.list));
-            testSort(new QuickSort());//快速排序
+//            testSort(new SelectionSort());//选择排序
+//            testSort(new QuickSort());//快速排序
+//            testSort(new ShellSort());//希尔排序,数量少时效率比快速排序快
 //            log(i+ " 排序后是否有序："+mMixList.checkOrderly(mMain.list));
-            testSort(new MergeSort());
-            testSort(new DualPivotQuickSort());
+//            testSort(new MergeSort());
+//            testSort(new DualPivotQuickSort());
             /*testSort(new Sortable() {
                 @Override
                 public void sort(int[] list) {
                     Arrays.sort(list);
                 }
             });*/
+            log("\n");
         }
         comparisonSortFlag = false;
 
@@ -105,6 +106,7 @@ public class Main {
         sortable.sort(list);
         log("Sort with [ " + sortable.getClass().getName() + " ] for " + (System.currentTimeMillis() - start) + " milliseconds");
         logList(list);
+//        log(sortable.getClass().getName()+" 有序： "+new MixList().checkOrderly(list));//可以对排序好的结果进行检查是否是顺序。
     }
 
     /**
