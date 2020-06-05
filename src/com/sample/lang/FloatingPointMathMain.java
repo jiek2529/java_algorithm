@@ -13,6 +13,38 @@ public class FloatingPointMathMain {
         boxingFloatMathError();
 
         floatCompare();
+
+        recommendUsage();
+    }
+
+    /**
+     * 推荐浮点数运算注意项，Float 有效位7~8位，Double 有效位17~18位
+     */
+    private static void recommendUsage() {
+        System.out.println("\n------------");
+        BigDecimal unrecommend = new BigDecimal(0.1f);// 实际的存储值为:0.10000000149
+        System.out.println(unrecommend);
+
+//        正例:优先推荐入参为 String 的构造方法，或使用 BigDecimal 的 valueOf 方法，此方法内部其实执行了
+//        Double 的 toString，而 Double 的 toString 按 double 的实际能表达的精度对尾数进行了截断。
+
+        BigDecimal recommend1 = new BigDecimal("0.2");
+        BigDecimal recommend2 = BigDecimal.valueOf(0.1);
+        System.out.println(recommend1);
+        System.out.println(recommend2);
+        System.out.println(recommend1.subtract(recommend2));
+        System.out.println(recommend1.add(recommend2));
+
+//        1.2345678901234568E-21
+        BigDecimal bigDecimal = BigDecimal.valueOf(0.123456789012345678901234567890123456789E-20);
+//        0.12345678901234568
+//        BigDecimal bigDecimal = BigDecimal.valueOf(0.123456789012345678901234567890123456789);
+        // 1.23456789012345677E+188
+//        BigDecimal bigDecimal = BigDecimal.valueOf(1234567890123456789.01234567890123456789D);//double 是18位有效位
+        BigDecimal subtract = bigDecimal.subtract(recommend2).add(recommend2);
+        System.out.println(bigDecimal);
+        System.out.println(subtract);
+        System.out.println(subtract.doubleValue());
     }
 
     private static void floatCompare() {
