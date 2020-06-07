@@ -2,6 +2,10 @@ package com.sample.util;
 
 import org.openjdk.jol.info.ClassLayout;
 
+import java.util.Iterator;
+import java.util.List;
+import java.util.ListIterator;
+
 /**
  * Created by jiek on 2020/4/15.
  * <p>
@@ -116,5 +120,30 @@ public class Util {
 
     public static void splitLine(String msg) {
         System.out.println("\n\t========== " + msg + " ========");
+    }
+
+
+
+    public static void traverseList(List<String> list) {
+        Util.splitLine("traverse the List using for each");
+        for (String s : list) {
+            System.out.println(s);
+        }
+        traverseListIterator(list.listIterator());
+        traverseIterator(list.iterator());
+    }
+
+    public static void traverseListIterator(ListIterator listIterator) {
+        Util.splitLine("traverse the List using ListIterator");
+        while (listIterator.hasNext()) {
+            System.out.println(listIterator.next());
+        }
+    }
+
+    public static void traverseIterator(Iterator iterator) {
+        Util.splitLine("traverse the List using Iterator");
+        while (iterator.hasNext()) {
+            System.out.println(iterator.next());
+        }
     }
 }
