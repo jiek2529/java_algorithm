@@ -1,6 +1,7 @@
 package com.sample.util;
 
 import java.util.*;
+import java.util.concurrent.CopyOnWriteArrayList;
 
 import static com.sample.util.Util.*;
 
@@ -16,6 +17,8 @@ import static com.sample.util.Util.*;
  * 转线程安全有两种方式：java.util.concurrent.Concurrent** ;  Collections.synchronied**
  */
 public class CollectionMain {
+    static List<String> staticList = new CopyOnWriteArrayList<String>();
+
     public static void main(String[] args) {
         try {
             Integer a = 1;
@@ -36,6 +39,8 @@ public class CollectionMain {
         testHashMap();
 
         foreachRemove();
+
+//        copyOnWriteArrayListIteratorModification();
     }
 
     private static void testHashMap() {
@@ -206,10 +211,80 @@ public class CollectionMain {
         stringList_4.add("3");
 
         for (int i = 0; i < stringList_4.size(); i++) {
-            if (Objects.equals(stringList_4.get(i), ""+i)) {//会依上方数组[0,4,1,5,2,6,3]的次序，将0，1，2，3给删除掉，导致不安全
+            if (Objects.equals(stringList_4.get(i), "" + i)) {//会依上方数组[0,4,1,5,2,6,3]的次序，将0，1，2，3给删除掉，导致不安全
                 stringList_4.remove(stringList_4.get(i));
             }
         }
         System.out.println(stringList_4);//结果为[4,5,6],所以遍历时删除是很不稳定的过程，固然ali 推荐使用iterator 去遍历删除，会直接抛异常
+
+        iteratorRemove();
+    }
+
+    /**
+     * 单线程下使用iterator 安全删除元素
+     */
+    private static void iteratorRemove() {
+        splitLine();
+        List<String> stringList = new ArrayList<>();
+        stringList.add("1");
+        stringList.add("2");
+        stringList.add("3");
+
+        Iterator<String> iterator = stringList.iterator();
+        while (iterator.hasNext()) {
+            String it = iterator.next();
+            if (Objects.equals(it, "" + it)) {
+                /*这样删除，不会导致抛 ConcurrentModificationException，因为它重置了 expectedModCount=modcount
+                来解决问题了。但这不适用于多线程并发时。*/
+                iterator.remove();
+            }
+        }
+        System.out.println(stringList);
+
+        copyOnWriteArrayListIteratorModification();
+    }
+
+    private static void copyOnWriteArrayListIteratorModification() {
+        splitLine();
+        for (int i = 0; i < 12; i++) {
+            staticList.add("" + i);
+        }
+
+        for (int i = 0; i < 2; i++) {
+            new Thread(() -> {
+                Iterator<String> iterator = staticList.iterator();
+                while (iterator.hasNext()) {
+                    String str = iterator.next();
+                    System.out.println(str);
+                    try {
+                        Thread.sleep(100);
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }).start();
+        }
+
+        new Thread(() -> {
+//            Iterator<String> iterator = staticList.iterator();//CopyOnWriteArrayList的 Iterator 是不支持 remove
+            /*while (iterator.hasNext()) {
+                String it = iterator.next();
+                if (Objects.equals(it, "" + (Integer.valueOf(it) * 2))) {
+                    iterator.remove();
+                }
+            }*/
+            staticList.remove("0");
+            staticList.remove("3");
+            staticList.remove("5");
+            System.out.println("线程里删除 1："+staticList);
+        }).start();
+
+//        lambda
+        (new Thread(() -> {
+            staticList.remove("7");
+            staticList.remove("11");
+            System.out.println("线程里删除2 ：" + staticList);
+        })).start();
+        System.out.println("主线程打印原值："+staticList);
     }
 }
