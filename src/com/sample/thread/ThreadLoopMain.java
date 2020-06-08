@@ -14,7 +14,9 @@ public class ThreadLoopMain {
         TimeUnit KEEP_ALIVE_TIME_UNIT = TimeUnit.SECONDS;
         BlockingQueue<Runnable> taskQueue = new LinkedBlockingDeque<>(4);//设置空间大小，可防止 OOM 的产生
         /*比 ArrayBlockingQueue 好，不用申请连续有容量限制的空间，还是线程安全的 AQS CAS 模式
-        ArrayBlockingQueue{先进先出}；LinkedBlockingQueue{后进先出};*/
+        ArrayBlockingQueue{先进先出}加数据不产生新对象，增删使用统一 ReentryLock；
+        LinkedBlockingQueue{先进先出}增加数据时产生新 Node 节点，对 GC 有一些的性能损耗，JDK7中 添加使用的是 putLock，出队列用 takeLock，高并发性能更好；但
+        JDK8中使用与与 ArrayBlockingQueue 一样的只有一个公用 ReenttyLock;*/
         ExecutorService executorService = new ThreadPoolExecutor(NUMBER_OF_CORES, NUMBER_OF_CORES * 2,
                 //当等待队列满时，线程池中不满最大数量时，就进行新开线程直至最大线程数为止
                 KEEP_ALIVE_TIME, KEEP_ALIVE_TIME_UNIT, taskQueue, new BackgroundThreadFactory()
