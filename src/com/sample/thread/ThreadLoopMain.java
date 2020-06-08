@@ -12,8 +12,9 @@ public class ThreadLoopMain {
         int NUMBER_OF_CORES = Runtime.getRuntime().availableProcessors();
         int KEEP_ALIVE_TIME = 1;
         TimeUnit KEEP_ALIVE_TIME_UNIT = TimeUnit.SECONDS;
-        BlockingQueue<Runnable> taskQueue = new ArrayBlockingQueue<>(4);
-        //ArrayBlockingQueue{先进先出}；LinkedBlockingQueue{后进先出};
+        BlockingQueue<Runnable> taskQueue = new LinkedBlockingDeque<>(4);//设置空间大小，可防止 OOM 的产生
+        /*比 ArrayBlockingQueue 好，不用申请连续有容量限制的空间，还是线程安全的 AQS CAS 模式
+        ArrayBlockingQueue{先进先出}；LinkedBlockingQueue{后进先出};*/
         ExecutorService executorService = new ThreadPoolExecutor(NUMBER_OF_CORES, NUMBER_OF_CORES * 2,
                 //当等待队列满时，线程池中不满最大数量时，就进行新开线程直至最大线程数为止
                 KEEP_ALIVE_TIME, KEEP_ALIVE_TIME_UNIT, taskQueue, new BackgroundThreadFactory()
@@ -25,7 +26,6 @@ public class ThreadLoopMain {
         for (int i = 0; i < 100; i++) {
 //            执行任务
             int finalI = i;
-            System.out.println(i);
             executorService.execute(() -> {
                 System.out.println(Thread.currentThread().getName() + ": before: " + finalI);
                 try {
