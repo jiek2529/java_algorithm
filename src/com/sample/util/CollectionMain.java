@@ -2,6 +2,8 @@ package com.sample.util;
 
 import java.util.*;
 
+import static com.sample.util.Util.*;
+
 /**
  * Created by jiek on 2020/5/26.
  * <p>
@@ -15,8 +17,34 @@ import java.util.*;
  */
 public class CollectionMain {
     public static void main(String[] args) {
+        try {
+            Integer a = 1;
+            Integer b = 2;
+            Integer c = null;
+            Boolean flag = false;
+// a*b 的结果是 int 类型，那么 c 会强制拆箱成 int 类型，抛出 NPE 异常
+            Integer result = (flag ? a * b : c);
+        } catch (Exception e) {
+            e.printStackTrace();
+            System.out.println("封装类的四则运算会导致自动拆箱，在三目表达式中会导致两种结果都拆箱，导致 NPE！");
+        }
+
         testListFeatures();
+
         testSetFeatures();
+
+        testHashMap();
+
+        foreachRemove();
+    }
+
+    private static void testHashMap() {
+        int len = 3;
+        Map<String, Integer> map = new HashMap<>(len);
+
+        for (int i = 0; i < 18; i++) {
+            map.put("1_" + i, i);
+        }
     }
 
     private static void testSetFeatures() {
@@ -47,7 +75,8 @@ public class CollectionMain {
 
         traverseIterator(set.iterator());
 
-        Set treeset = new TreeSet(new Comparator<String>() {//TreeSet --> TreeMap.put compare key, possibly null need to check -> maybe throws NullPointerException
+        Set treeset = new TreeSet(new Comparator<String>() {//TreeSet --> TreeMap.put compare key, possibly null need
+            // to check -> maybe throws NullPointerException
             @Override
             public int compare(String o1, String o2) {
                 if (o1 == null) return -1;//添加null 是否抛异常由此区域控制，默认无 Comparator 时，不检测null 值
@@ -99,26 +128,88 @@ public class CollectionMain {
         traverseList(list);
     }
 
-    private static void traverseList(List<String> list) {
-        Util.splitLine("traverse the List using for each");
-        for (String s : list) {
-            System.out.println(s);
-        }
-        traverseListIterator(list.listIterator());
-        traverseIterator(list.iterator());
-    }
+    /**
+     * 验证iterator遍历时的抛并发修改异常的场景与逻辑
+     * <p>
+     * ali 的 java 开发指南推荐
+     */
+    private static void foreachRemove() {
+        splitLine();
+        List<String> stringList = new ArrayList<>();
+        stringList.add("1");
+        stringList.add("2");
+        stringList.add("3");
 
-    private static void traverseListIterator(ListIterator listIterator) {
-        Util.splitLine("traverse the List using ListIterator");
-        while (listIterator.hasNext()) {
-            System.out.println(listIterator.next());
+        /*抛异常是因为checkForComodification的 modcount!=expectedModCount,因为每次修改都会导致其加1，
+        所以在只删除遍历倒数第二条时，永远不会有问题，否则导致next为null而结束，而不触发 ConcurrentModificationException*/
+        try {
+            for (String s : stringList) {//语法糖会编译成 iterator next 遍历方式
+                if (Objects.equals(s, "2")) {//删除不是倒数第二条记录时，结果会抛 ConcurrentModificationException
+                    stringList.remove(s);
+                }
+            }
+            System.out.println(stringList);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
-    }
 
-    private static void traverseIterator(Iterator iterator) {
-        Util.splitLine("traverse the List using Iterator");
-        while (iterator.hasNext()) {
-            System.out.println(iterator.next());
+        splitLine();
+        //第一种
+        List<String> stringList_1 = new ArrayList<>();
+        stringList_1.add("1");
+        stringList_1.add("2");
+        stringList_1.add("3");
+
+        for (int i = 0; i < stringList_1.size(); i++) {
+            if (Objects.equals(stringList_1.get(i), "1")) {
+                stringList_1.remove(stringList_1.get(i));
+            }
         }
+        System.out.println(stringList_1);
+
+//第二种
+        splitLine();
+        List<String> stringList_2 = new ArrayList<>();
+        stringList_2.add("1");
+        stringList_2.add("2");
+        stringList_2.add("3");
+
+        for (int i = 0; i < stringList_2.size(); i++) {
+            if (Objects.equals(stringList_2.get(i), "2")) {
+                stringList_2.remove(stringList_2.get(i));
+            }
+        }
+        System.out.println(stringList_2);
+
+//第三种
+        splitLine();
+        List<String> stringList_3 = new ArrayList<>();
+        stringList_3.add("1");
+        stringList_3.add("2");
+        stringList_3.add("3");
+
+        for (int i = 0; i < stringList_3.size(); i++) {
+            if (Objects.equals(stringList_3.get(i), "3")) {
+                stringList_3.remove(stringList_3.get(i));
+            }
+        }
+        System.out.println(stringList_3);
+
+        splitLine();
+        List<String> stringList_4 = new ArrayList<>();
+        stringList_4.add("0");
+        stringList_4.add("4");
+        stringList_4.add("1");
+        stringList_4.add("5");
+        stringList_4.add("2");
+        stringList_4.add("6");
+        stringList_4.add("3");
+
+        for (int i = 0; i < stringList_4.size(); i++) {
+            if (Objects.equals(stringList_4.get(i), ""+i)) {//会依上方数组[0,4,1,5,2,6,3]的次序，将0，1，2，3给删除掉，导致不安全
+                stringList_4.remove(stringList_4.get(i));
+            }
+        }
+        System.out.println(stringList_4);//结果为[4,5,6],所以遍历时删除是很不稳定的过程，固然ali 推荐使用iterator 去遍历删除，会直接抛异常
     }
 }
