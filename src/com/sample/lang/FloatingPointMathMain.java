@@ -9,12 +9,36 @@ import java.math.BigDecimal;
  */
 public class FloatingPointMathMain {
     public static void main(String[] args) {
-        primitiveFloatMathError();
-        boxingFloatMathError();
+//        primitiveFloatMathError();
+//        boxingFloatMathError();
+//
+//        floatCompare();
+//
+//        recommendUsage();
 
-        floatCompare();
+        primitiveType();
+    }
 
-        recommendUsage();
+    /**
+     * 基本类型与其封装类的赋值注意事项。
+     */
+    private static void primitiveType() {
+        Double d = 13.0;
+        d = 1.0D;
+        Float f = 1.0F;// 1.0 X
+        float f1 = 1.0F;// 1.0 X
+        Long l = 1L;// 1 X
+        long l1 = 1;//会自动编译成1L
+        long l2 = 1L;
+
+        /**
+         * BigDecimal 当不可被整除时，会抛出异常，『ArithmeticException: Non-terminating decimal expansion; no exact representable
+         * decimal result.』
+         * 应使用加有效位来控制。
+         */
+        BigDecimal bigDecimal = new BigDecimal(Double.toString(d)).divide(new BigDecimal("3"), 5, BigDecimal
+                .ROUND_HALF_UP);
+        System.out.println(bigDecimal.doubleValue());
     }
 
     /**
@@ -40,11 +64,16 @@ public class FloatingPointMathMain {
 //        0.12345678901234568
 //        BigDecimal bigDecimal = BigDecimal.valueOf(0.123456789012345678901234567890123456789);
         // 1.23456789012345677E+188
-//        BigDecimal bigDecimal = BigDecimal.valueOf(1234567890123456789.01234567890123456789D);//double 是18位有效位
+//        BigDecimal bigDecimal = BigDecimal.valueOf(1234567890123456789.01234567890123456789D);//double 是16位有效位
         BigDecimal subtract = bigDecimal.subtract(recommend2).add(recommend2);
         System.out.println(bigDecimal);
         System.out.println(subtract);
         System.out.println(subtract.doubleValue());
+
+
+        String str = "a,b,c,,,,g,,";
+        String[] ary = str.split(",");// 预期大于 7，结果是 7
+        System.out.println(ary.length);
     }
 
     private static void floatCompare() {
