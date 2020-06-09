@@ -7,6 +7,7 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.SecretKey;
 import javax.crypto.spec.IvParameterSpec;
 import javax.crypto.spec.SecretKeySpec;
+import java.security.SecureRandom;
 
 /**
  * Created by jiek on 2020/6/9.
@@ -31,9 +32,10 @@ public class CryptoMain {
             String sks = "AES/CBC/PKCS5Padding";
             String cryptoMode = "AES";
             {//方式一
-                byte[] bytes1 = "abcdefghijklmnop".getBytes();//new byte[16];
+                byte[] rand = new byte[16];
+                SecureRandom r = new SecureRandom(); r.nextBytes(rand);//ali android 规范v9中推荐使用此方式随机生成矢量参数
 //                p(bytes1);
-                IvParameterSpec algorithmParameterSpec = new IvParameterSpec(bytes1);
+                IvParameterSpec algorithmParameterSpec = new IvParameterSpec(rand);
 
                 SecretKeySpec skeySpec = new SecretKeySpec(key, cryptoMode);
 

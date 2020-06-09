@@ -16,19 +16,13 @@ public class Disorder {
             b = 0;
             x = 0;
             y = 0;
-            Thread one = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    a = 1;
-                    x = b;
-                }
+            Thread one = new Thread(() -> {
+                a = 1;
+                x = b;//当x= 0 & y=0时，发生指令重排序后，此行在 a = 1 前执行。
             });
-            Thread other = new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    b = 1;
-                    y = a;
-                }
+            Thread other = new Thread(() -> {
+                b = 1;
+                y = a;//当x= 0 & y=0时，发生指令重排序后，此行在 b = 1前执行。
             });
             one.start();
             other.start();
