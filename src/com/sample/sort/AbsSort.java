@@ -39,9 +39,13 @@ public abstract class AbsSort<T extends Comparable> implements ISort<T> {
      * @param r
      */
     void swap(T[] list, int l, int r) {
+        if (l == r) {
+            return;
+        }
         T tmp = list[l];
         list[l] = list[r];
         list[r] = tmp;
+//        System.out.println("swap: " + l + ", " + r);
     }
 
     /**

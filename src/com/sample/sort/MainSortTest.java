@@ -37,18 +37,6 @@ public class MainSortTest {
 
 //        测试 ShellSort 的步长衰减性能对比
 //        test_ShellSortDecay();
-
-//   -------- 以下为逐一测试 -------
-//        sortFactory.getSort(SelectionSort.class)  .sort(mockList(), sortType);//在原列表中进行移位排序
-//        sortFactory.getSort(SelectionSort.class)  .test(mockList(), sortType);//测试输出排序结果
-
-////        冒泡排序 测试
-//        new BubbleSort().test(mockList(), sortType);
-////        选择排序 测试
-//        new SelectionSort().test(mockList(), sortType);
-////        插入排序 测试
-//        new InsertionSort().test(mockList(), sortType);
-
     }
 
     /**
@@ -56,21 +44,29 @@ public class MainSortTest {
      */
     private static void test_allSortPerformance() {
         Class[] classes = {
+//                数据量大时，排序性能低至高，依次如下
+
 //                BubbleSort.class,//冒泡排序               【稳定排序】
-//                BubbleSort.class,//冒泡排序               【稳定排序】
-                BubbleSort.class,//冒泡排序               【稳定排序】
                 SelectionSort.class,//选择排序              【不稳定排序】
                 InsertionSort.class,//插入排序,一次移动一位 【稳定排序】
                 ShellSort.class, //希尔排序 插入排序改进版，移动步长位   【不稳定排序】
+                MergeSort.class, //归并排序                【稳定排序】
+                QuickSort.class, //快速排序                【稳定排序】
+                RadixSort.class, //基数排序 暂仅支持 Integer 数据排序        【稳定排序】
                 HeapSort.class, //堆排序                      【不稳定排序】
-                MergeSort.class, //归并排序                      【不稳定排序】
+//                DualPivotQuickSort.class,//todo 采用Arrays.sort 双轴快速排序 是快速排序增强版
+//                CountingSort.class, // 计数排序仅适用于数字种类很少时的统计排序
+
+//                当数据量少时[约1-1024]，性能如下 QuickSort > HeapSort > RadixSort
+
+//                相对来说，堆排序是比较高效的排序算法，时间复杂度 O(n*lgn) 空间复杂度 O(n) 不稳定算法
         };
 
         //使用工厂模式，对列表进行排序
         SortFactory sortFactory = new SortFactory();
 
 //        模拟批量数据
-        Comparable[] list = mockList(1 << 12);//13 = 8K 量
+        Comparable[] list = mockList(1 << 13);//13 = 8K 量
         for (int i = 0; i < classes.length; i++) {
             Comparable[] datas = Arrays.copyOf(list, list.length);
             ((AbsSort<Comparable>) sortFactory.getSort(classes[i])).test(datas, sortType);//在原数据上进行排序
@@ -88,8 +84,8 @@ public class MainSortTest {
 //        随机算法产生指定数量的原始数据
         if (randomNumsFlag) {
             Random r = new Random();
-            if (len > 1 << 22) {
-                len = 1 << 22;
+            if (len > 1 << 16) {
+                len = 1 << 16;
             }
             nums = new Integer[len];
             for (int i = 0; i < nums.length; i++) {

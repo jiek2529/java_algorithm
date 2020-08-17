@@ -1,5 +1,6 @@
 package com.sample.sort;
 
+import java.lang.reflect.Array;
 import java.util.Arrays;
 
 /**
@@ -31,22 +32,24 @@ public class RadixSort<T extends Comparable> extends AbsSort<T> {
         int k = type ? 0 : list.length;
         int n = 1;
         int m = 1; //控制键值排序依据在哪一位
-        Integer[][] temp = new Integer[10][list.length]; //数组的第一维表示可能的余数0-9
+        T[][] temp = (T[][]) Array.newInstance(list[0].getClass(), 10, list.length);
+        //数组的第一维表示可能的余数0-9
         int[] order = new int[10]; //数组order[i]用来表示该位是i的数的个数
+
         while (m <= radix) {
             for (int i = 0; i < list.length; i++) {
                 int lsd = (((Integer) list[i] / n) % 10);
-                temp[lsd][order[lsd]] = (Integer) list[i];
+                temp[lsd][order[lsd]] = list[i];
                 order[lsd]++;
             }
             for (int i = 0; i < 10; i++) {
                 if (order[i] != 0) {
                     for (int j = 0; j < order[i]; j++) {
                         if (type) {
-                            list[k] = (T) temp[i][j];
+                            list[k] = temp[i][j];
                             k++;
                         } else {
-                            list[k] = (T) temp[i][j];
+                            list[k] = temp[i][j];
                             k--;
                         }
                     }
@@ -56,7 +59,7 @@ public class RadixSort<T extends Comparable> extends AbsSort<T> {
             n *= 10;
             k = 0;
             m++;
-            System.out.println(Arrays.toString(list));
+//            System.out.println(Arrays.toString(list));
         }
         return list;
     }
