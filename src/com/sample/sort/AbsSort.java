@@ -7,15 +7,7 @@ import java.util.Arrays;
  * <p>
  * 排序算法抽象父类
  */
-public abstract class AbsSort<T extends Comparable> {
-
-    /**
-     * 前提：list 不为空，且数组长大于1
-     *
-     * @param list
-     * @param type true 顺序； false 倒序
-     */
-    abstract void sort(T[] list, boolean type);
+public abstract class AbsSort<T extends Comparable> implements ISort<T> {
 
     /**
      * 根据排序类型，比较两值是否需要交换

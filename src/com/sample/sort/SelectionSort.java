@@ -11,7 +11,7 @@ package com.sample.sort;
 public class SelectionSort<T extends Comparable> extends AbsSort<T> {
 
     @Override
-    void sort(T[] list, boolean type) {
+    public void sort(T[] list, boolean type) {
 //        每轮向后找到的最小数下标
         int min;
         //比较 N-1轮
