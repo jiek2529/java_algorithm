@@ -25,8 +25,8 @@ public class ShellSort<T extends Comparable> extends AbsSort<T> {
      *             步长衰减率缺省值为 2
      */
     @Override
-    public void sort(T[] list, boolean type) {
-        sort(list, type, 2);
+    public T[] sort(T[] list, boolean type) {
+        return sort(list, type, 2);
     }
 
     /**
@@ -34,7 +34,7 @@ public class ShellSort<T extends Comparable> extends AbsSort<T> {
      * @param type  true升序 或 false降序
      * @param decay 步长衰减率 最小值为2
      */
-    public void sort(T[] list, boolean type, int decay) {
+    public T[] sort(T[] list, boolean type, int decay) {
 //        步长
         int gap = 1;
         if (decay < 2) {
@@ -67,5 +67,6 @@ public class ShellSort<T extends Comparable> extends AbsSort<T> {
             }
         }
         System.out.println("\tShellSort swapCount=" + swapCount + "; decay=" + decay);
+        return list;
     }
 }

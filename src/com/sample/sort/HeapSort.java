@@ -33,7 +33,7 @@ public class HeapSort<T extends Comparable> extends AbsSort<T> {
      * @param array 待排序数组
      * @return 已排序数组
      */
-    public void sort(T[] array, boolean type) {
+    public T[] sort(T[] array, boolean type) {
         //最后一个非叶节点下标: array.length / 2 - 1, 下标从0开始
 //        System.out.println("先从非叶节点向前调整，将最大值交换至其堆顶");
 
@@ -53,6 +53,7 @@ public class HeapSort<T extends Comparable> extends AbsSort<T> {
             // 而这里，实质上是自上而下，自左向右进行调整的
             adjustHeap(array, 0, j, type);
         }
+        return array;
     }
 
     /**

@@ -16,7 +16,7 @@ package com.sample.sort;
 public class BubbleSort<T extends Comparable> extends AbsSort<T> {
 
     @Override
-    public void sort(T[] list, boolean type) {
+    public T[] sort(T[] list, boolean type) {
         if (list != null && list.length > 1) {
             for (int i = 1; i < list.length; i++) {//比较 N-1次
                 for (int j = 0; j < list.length - i; j++) {
@@ -26,5 +26,6 @@ public class BubbleSort<T extends Comparable> extends AbsSort<T> {
                 }
             }
         }
+        return list;
     }
 }

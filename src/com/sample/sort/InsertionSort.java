@@ -20,7 +20,7 @@ public class InsertionSort<T extends Comparable> extends AbsSort<T> {
     byte method = 1;
 
     @Override
-    public void sort(T[] list, boolean type) {
+    public T[] sort(T[] list, boolean type) {
         for (int i = 1; i < list.length; i++) {
             int position = -1;
             position = binarySearchPosition(list, i, type);
@@ -30,6 +30,7 @@ public class InsertionSort<T extends Comparable> extends AbsSort<T> {
                 list[position] = tmp;
             }
         }
+        return list;
     }
 
     /**

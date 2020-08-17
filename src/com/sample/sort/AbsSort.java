@@ -6,6 +6,8 @@ import java.util.Arrays;
  * Created by jiek on 2020/8/17.
  * <p>
  * 排序算法抽象父类
+ * <p>
+ * sort方法需要外部判空处理
  */
 public abstract class AbsSort<T extends Comparable> implements ISort<T> {
 
@@ -71,7 +73,7 @@ public abstract class AbsSort<T extends Comparable> implements ISort<T> {
         }
         long start = System.currentTimeMillis();
         if (arrayList != null && arrayList.length > 1) {
-            sort(arrayList, sortType);
+            arrayList = sort(arrayList, sortType);
         }
         if (arrayList.length < 32) {
             System.out.println((sortType ? "顺序" : "倒序") + this.getClass().getSimpleName() + " >\t" + "the sorted " +

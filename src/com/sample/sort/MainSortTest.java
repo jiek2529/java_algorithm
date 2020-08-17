@@ -56,20 +56,21 @@ public class MainSortTest {
      */
     private static void test_allSortPerformance() {
         Class[] classes = {
-                BubbleSort.class,//冒泡排序               【稳定排序】
-                BubbleSort.class,//冒泡排序               【稳定排序】
+//                BubbleSort.class,//冒泡排序               【稳定排序】
+//                BubbleSort.class,//冒泡排序               【稳定排序】
                 BubbleSort.class,//冒泡排序               【稳定排序】
                 SelectionSort.class,//选择排序              【不稳定排序】
                 InsertionSort.class,//插入排序,一次移动一位 【稳定排序】
                 ShellSort.class, //希尔排序 插入排序改进版，移动步长位   【不稳定排序】
                 HeapSort.class, //堆排序                      【不稳定排序】
+                MergeSort.class, //归并排序                      【不稳定排序】
         };
 
         //使用工厂模式，对列表进行排序
         SortFactory sortFactory = new SortFactory();
 
 //        模拟批量数据
-        Comparable[] list = mockList(1 << 13);
+        Comparable[] list = mockList(1 << 12);//13 = 8K 量
         for (int i = 0; i < classes.length; i++) {
             Comparable[] datas = Arrays.copyOf(list, list.length);
             ((AbsSort<Comparable>) sortFactory.getSort(classes[i])).test(datas, sortType);//在原数据上进行排序
@@ -87,6 +88,9 @@ public class MainSortTest {
 //        随机算法产生指定数量的原始数据
         if (randomNumsFlag) {
             Random r = new Random();
+            if (len > 1 << 22) {
+                len = 1 << 22;
+            }
             nums = new Integer[len];
             for (int i = 0; i < nums.length; i++) {
                 nums[i] = r.nextInt(nums.length);

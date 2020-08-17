@@ -10,6 +10,7 @@ public interface ISort<T extends Comparable> {
      *
      * @param list
      * @param type true 顺序； false 倒序
+     * @return 因有排序算法需要新空间去交换，所以增加返回值
      */
-    void sort(T[] list, boolean type);
+    T[] sort(T[] list, boolean type);
 }
