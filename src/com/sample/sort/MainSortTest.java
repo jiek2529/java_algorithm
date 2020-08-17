@@ -25,12 +25,12 @@ public class MainSortTest {
     final static boolean sortType = true;
 
     public static void main(String[] args) {
-////        冒泡排序 测试
-//        new BubbleSort().test(mockList(), sortType);
-////        选择排序 测试
-//        new SelectionSort().test(mockList(), sortType);
-////        插入排序 测试
-//        new InsertionSort().test(mockList(), sortType);
+//        冒泡排序 测试
+        new BubbleSort().test(mockList(), sortType);
+//        选择排序 测试
+        new SelectionSort().test(mockList(), sortType);
+//        插入排序 测试
+        new InsertionSort().test(mockList(), sortType);
     }
 
     /**
