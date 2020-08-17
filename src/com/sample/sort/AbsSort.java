@@ -66,12 +66,18 @@ public abstract class AbsSort<T extends Comparable> implements ISort<T> {
      */
     @Deprecated
     void test(T[] arrayList, boolean sortType) {
-        System.out.println("\t原数组 the original list: \t" + Arrays.toString(arrayList));
+        if (arrayList.length < 32) {
+            System.out.println("\t原数组 the original list: \t" + Arrays.toString(arrayList));
+        }
+        long start = System.currentTimeMillis();
         if (arrayList != null && arrayList.length > 1) {
             sort(arrayList, sortType);
         }
-        System.out.println((sortType ? "顺序" : "倒序") + this.getClass().getSimpleName() + " >\t" + "the sorted " +
-                "list: " + Arrays.toString(arrayList));
-        System.out.println("");
+        if (arrayList.length < 32) {
+            System.out.println((sortType ? "顺序" : "倒序") + this.getClass().getSimpleName() + " >\t" + "the sorted " +
+                    "list: " + Arrays.toString(arrayList));
+        }
+        System.out.println(this.getClass().getSimpleName() + " >\t " + (sortType ? "顺序" : "倒序") + "数组长度=" + arrayList
+                .length + " 排序用时：" + (System.currentTimeMillis() - start));
     }
 }

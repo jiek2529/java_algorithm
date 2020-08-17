@@ -1,5 +1,6 @@
 package com.sample.sort;
 
+import java.util.Arrays;
 import java.util.Random;
 
 /**
@@ -20,7 +21,7 @@ public class MainSortTest {
     /**
      * 验证算法稳定性: true 数据用 SortBean，false 数据用 Integer
      */
-    final static boolean checkStable = true;
+    final static boolean checkStable = false;
     /**
      * sortType?"顺序":"倒序"
      */
@@ -28,13 +29,13 @@ public class MainSortTest {
     /**
      * 是否随机产生数据
      */
-    final static boolean randomNumsFlag = false;
+    final static boolean randomNumsFlag = true;
 
     public static void main(String[] args) {
 //        所有算法性能对比
         test_allSortPerformance();
 
-////        测试 ShellSort 的步长衰减性能对比
+//        测试 ShellSort 的步长衰减性能对比
 //        test_ShellSortDecay();
 
 //   -------- 以下为逐一测试 -------
@@ -55,17 +56,23 @@ public class MainSortTest {
      */
     private static void test_allSortPerformance() {
         Class[] classes = {
-//                BubbleSort.class,//冒泡排序               【稳定排序】
-//                SelectionSort.class,//选择排序            【不稳定排序】
-//                InsertionSort.class,//插入排序,一次移动一位 【稳定排序】
+                BubbleSort.class,//冒泡排序               【稳定排序】
+                BubbleSort.class,//冒泡排序               【稳定排序】
+                BubbleSort.class,//冒泡排序               【稳定排序】
+                SelectionSort.class,//选择排序              【不稳定排序】
+                InsertionSort.class,//插入排序,一次移动一位 【稳定排序】
                 ShellSort.class, //希尔排序 插入排序改进版，移动步长位   【不稳定排序】
+                HeapSort.class, //堆排序                      【不稳定排序】
         };
 
         //使用工厂模式，对列表进行排序
         SortFactory sortFactory = new SortFactory();
 
+//        模拟批量数据
+        Comparable[] list = mockList(1 << 13);
         for (int i = 0; i < classes.length; i++) {
-            ((AbsSort<Comparable>) sortFactory.getSort(classes[i])).test(mockList(), sortType);//在原数据上进行排序
+            Comparable[] datas = Arrays.copyOf(list, list.length);
+            ((AbsSort<Comparable>) sortFactory.getSort(classes[i])).test(datas, sortType);//在原数据上进行排序
         }
     }
 
@@ -74,13 +81,13 @@ public class MainSortTest {
      *
      * @return
      */
-    private static Comparable[] mockList() {
+    private static Comparable[] mockList(int len) {
         Integer[] nums;
 
 //        随机算法产生指定数量的原始数据
         if (randomNumsFlag) {
             Random r = new Random();
-            nums = new Integer[1 << 4];
+            nums = new Integer[len];
             for (int i = 0; i < nums.length; i++) {
                 nums[i] = r.nextInt(nums.length);
             }
@@ -108,10 +115,17 @@ public class MainSortTest {
      * 单测希尔排序的步长衰减效率比
      */
     private static void test_ShellSortDecay() {
-        new ShellSort().sort(mockList(), sortType);
-        new ShellSort().sort(mockList(), sortType, 3);
-        new ShellSort().sort(mockList(), sortType, 4);
-        new ShellSort().sort(mockList(), sortType, 5);
-        new ShellSort().sort(mockList(), sortType, 6);
+//        模拟批量数据
+        Comparable[] list = mockList(1 << 6);
+
+        Comparable[] datas;
+        long time;
+        ShellSort shellSort = new ShellSort();
+        for (int i = 1; i < 10; i++) {
+            datas = Arrays.copyOf(list, list.length);
+            time = System.currentTimeMillis();
+            shellSort.sort(datas, sortType, i);
+            System.out.println("ShellSort 排序耗时：" + (System.currentTimeMillis() - time));
+        }
     }
 }

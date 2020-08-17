@@ -66,6 +66,6 @@ public class ShellSort<T extends Comparable> extends AbsSort<T> {
                 throw new RuntimeException("步长衰变率不能小于2， 当前值[" + decay + "]");
             }
         }
-        System.out.println("swapCount=" + swapCount + " ; decay=" + decay);
+        System.out.println("\tShellSort swapCount=" + swapCount + "; decay=" + decay);
     }
 }
