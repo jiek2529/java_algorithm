@@ -1,7 +1,8 @@
 package com.sample.sort;
 
+import com.sample.util.MockArrayUtil;
+
 import java.util.Arrays;
-import java.util.Random;
 
 /**
  * Created by jiek on 2020/8/17.
@@ -33,7 +34,9 @@ public class MainSortTest {
 
     public static void main(String[] args) {
 //        所有算法性能对比
-        test_allSortPerformance();
+        for (int i = 0; i < 5; i++) {
+            test_allSortPerformance();
+        }
 
 //        测试 ShellSort 的步长衰减性能对比
 //        test_ShellSortDecay();
@@ -47,15 +50,16 @@ public class MainSortTest {
 //                数据量大时，排序性能低至高，依次如下
 
 //                BubbleSort.class,//冒泡排序               【稳定排序】
-                SelectionSort.class,//选择排序              【不稳定排序】
-                InsertionSort.class,//插入排序,一次移动一位 【稳定排序】
+//                BubbleSort.class,//冒泡排序               【稳定排序】
+//                SelectionSort.class,//选择排序              【不稳定排序】
+//                InsertionSort.class,//插入排序,一次移动一位 【稳定排序】
                 ShellSort.class, //希尔排序 插入排序改进版，移动步长位   【不稳定排序】
                 MergeSort.class, //归并排序                【稳定排序】
-                QuickSort.class, //快速排序                【稳定排序】
+                QuickSort.class, //快速排序                   【不稳定排序】
                 RadixSort.class, //基数排序 暂仅支持 Integer 数据排序        【稳定排序】
                 HeapSort.class, //堆排序                      【不稳定排序】
-//                DualPivotQuickSort.class,//todo 采用Arrays.sort 双轴快速排序 是快速排序增强版
 //                CountingSort.class, // 计数排序仅适用于数字种类很少时的统计排序
+//                Arrays.sort 默认使用的是双轴快速排序，经验证性能与快排差不多    【不稳定排序】
 
 //                当数据量少时[约1-1024]，性能如下 QuickSort > HeapSort > RadixSort
 
@@ -66,11 +70,15 @@ public class MainSortTest {
         SortFactory sortFactory = new SortFactory();
 
 //        模拟批量数据
-        Comparable[] list = mockList(1 << 13);//13 = 8K 量
+        Comparable[] list = mockArray(1 << 20);//13 = 8K 量
         for (int i = 0; i < classes.length; i++) {
             Comparable[] datas = Arrays.copyOf(list, list.length);
             ((AbsSort<Comparable>) sortFactory.getSort(classes[i])).test(datas, sortType);//在原数据上进行排序
         }
+        Comparable[] a = Arrays.copyOf(list, list.length);
+        long usedTime = System.currentTimeMillis();
+        Arrays.sort(a);//, (o1, o2) -> o1.compareTo(o2));//顺序或倒序
+        System.out.println("Arrays.sort 使用的是双轴快排， 耗时时：" + (System.currentTimeMillis() - usedTime) + "\n");
     }
 
     /**
@@ -78,22 +86,15 @@ public class MainSortTest {
      *
      * @return
      */
-    private static Comparable[] mockList(int len) {
-        Integer[] nums;
+    private static Comparable[] mockArray(int len) {
+        int[] array;
 
 //        随机算法产生指定数量的原始数据
         if (randomNumsFlag) {
-            Random r = new Random();
-            if (len > 1 << 16) {
-                len = 1 << 16;
-            }
-            nums = new Integer[len];
-            for (int i = 0; i < nums.length; i++) {
-                nums[i] = r.nextInt(nums.length);
-            }
+            array = MockArrayUtil.mock(len);
         } else {
 //            指定少里数据进行排序验证
-            nums = new Integer[]{
+            array = new int[]{
 //                9, 8, 7, 6, 5, 4, 3, 2, 1, 0
                     3, 5, 2, 2, 1, 2
 //                    3, 5, 2, 26, 36, 19, 4, 4, 38, 44, 47, 50, 48, 4, 15
@@ -101,11 +102,13 @@ public class MainSortTest {
         }
 
         if (!checkStable) {
-            return nums;
+//            return Util.getArrayBoxed(array);
+            return Arrays.stream(array).boxed().toArray(Integer[]::new);
+
         } else {
-            SortBean[] arrayList = new SortBean[nums.length];
-            for (int i = 0; i < nums.length; i++) {
-                arrayList[i] = new SortBean(nums[i], i);
+            SortBean[] arrayList = new SortBean[array.length];
+            for (int i = 0; i < array.length; i++) {
+                arrayList[i] = new SortBean(array[i], i);
             }
             return arrayList;
         }
@@ -116,7 +119,7 @@ public class MainSortTest {
      */
     private static void test_ShellSortDecay() {
 //        模拟批量数据
-        Comparable[] list = mockList(1 << 6);
+        Comparable[] list = mockArray(1 << 15);
 
         Comparable[] datas;
         long time;

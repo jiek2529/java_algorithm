@@ -75,9 +75,10 @@ public abstract class AbsSort<T extends Comparable> implements ISort<T> {
         if (array.length < 32) {
             System.out.println("\t原数组 the original list: \t" + Arrays.toString(array));
         }
-        long start = System.currentTimeMillis();
+        long usedTime = System.currentTimeMillis();
         if (array != null && array.length > 1) {
             array = sort(array, sortType);
+            usedTime = (System.currentTimeMillis() - usedTime);
 
             check(array, sortType);
         }
@@ -86,7 +87,7 @@ public abstract class AbsSort<T extends Comparable> implements ISort<T> {
                     "list: " + Arrays.toString(array));
         }
         System.out.println(this.getClass().getSimpleName() + " >\t " + (sortType ? "顺序" : "倒序") + "数组长度=" + array
-                .length + " 排序用时：" + (System.currentTimeMillis() - start));
+                .length + " 排序用时：" + usedTime);
     }
 
     /**

@@ -24,7 +24,7 @@ public class RadixSort<T extends Comparable> extends AbsSort<T> {
                 Integer.class.isAssignableFrom(numbers.getClass())) {
             throw new Error("仅支持数值对象的遍历");
         }
-        return sort(numbers, true, 4);
+        return sort(numbers, true,  8);
     }
 
     public T[] sort(T[] list, boolean type, int radix) //radix表示最大的数有多少位
