@@ -2,9 +2,11 @@ package com.sample.util;
 
 import org.openjdk.jol.info.ClassLayout;
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.ListIterator;
+import java.util.stream.Collectors;
 
 /**
  * Created by jiek on 2020/4/15.
@@ -145,5 +147,31 @@ public class Util {
         while (iterator.hasNext()) {
             System.out.println(iterator.next());
         }
+    }
+
+
+//    以下为 int[] Integer[] List<Integer>三个互转方式，都需要外部进行判空处理
+    public static int[] getArray(Integer[] arr) {
+        return Arrays.stream(arr).mapToInt(Integer::valueOf).toArray();
+    }
+
+    public static int[] getArray(List<Integer> list) {
+        return list.stream().mapToInt(Integer::valueOf).toArray();
+    }
+
+    public static Integer[] getArrayBoxed(int[] arr) {
+        return Arrays.stream(arr).boxed().toArray(Integer[]::new);
+    }
+
+    public static Integer[] getArrayBoxed(List<Integer> list) {
+        return list.toArray(new Integer[0]);
+    }
+
+    public static List<Integer> getList(Integer[] arr) {
+        return Arrays.asList(arr);
+    }
+
+    public static List<Integer> getList(int[] arr) {
+        return Arrays.stream(arr).boxed().collect(Collectors.toList());
     }
 }
