@@ -1,5 +1,10 @@
 package com.sample.sort;
 
+import com.sample.util.MockArrayUtil;
+import com.sample.util.Util;
+
+import java.util.Arrays;
+
 /**
  * Created by jiek on 2020/8/17.
  * <p>
@@ -18,6 +23,19 @@ public class ShellSort<T extends Comparable> extends AbsSort<T> {
     @Deprecated
     int swapCount = 0;
 
+    public static void main(String[] args) {
+        Integer[] list = Util.getArrayBoxed(MockArrayUtil.mock(1 << 16));
+        long time;
+        ShellSort shellSort = new ShellSort();
+        for (int i = 1; i < 10; i++) {
+            Integer[] datas = Arrays.copyOf(list, list.length);
+            time = System.currentTimeMillis();
+            shellSort.sort(datas, true, i);
+//            shellSort.sort(datas, false, i);
+            System.out.println("ShellSort 排序耗时：" + (System.currentTimeMillis() - time));
+        }
+    }
+
     /**
      * @param list
      * @param type true升序 或 false降序
@@ -35,6 +53,7 @@ public class ShellSort<T extends Comparable> extends AbsSort<T> {
      * @param decay 步长衰减率 最小值为2
      */
     public T[] sort(T[] list, boolean type, int decay) {
+        swapCount = 0;
 //        步长
         int gap = 1;
         if (decay < 2) {
