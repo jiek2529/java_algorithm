@@ -37,6 +37,6 @@ com.sample.sort包下
 | date | problems | summary |
 |---|---|---|
 2020.8.20 | BinaryTreeTraversal | BFS DFS 二叉树的广度与深度遍历算法
-2020.8.19 | 2 ：Add_Two_Numbers | 数组中两个数之和等于目标数，每个数只能使用一次
+2020.8.19 | 2 ：Add_Two_Numbers | 两个单链表（每个节点值为从个位至高位的一个数）相加，输出结果为同格式单链表
 2020.8.18 | 1 ：Two_Sum | 数组中两个数之和等于目标数，每个数只能使用一次
 
