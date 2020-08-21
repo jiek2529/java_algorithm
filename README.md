@@ -34,11 +34,12 @@ com.sample.sort包下
 # 力扣算法题编程记录
 
 代码目录 https://github.com/jiek2529/java_algorithm/tree/master/src/com/sample/leetcode
-| date | problems | summary |
-|---|---|---|
-2020.8.21 | 3 : LongestSubstringWithoutRepeatingCharacters | 求字符串无重复子串最大长度
-2020.8.21 | 5 : LongestPalindrome | 字符串中查找最大回文子串，使用动态规划方案，可配置检索方向、最小回文长度和缺省值
-2020.8.20 | BinaryTreeTraversal | BFS DFS 二叉树的广度与深度遍历算法
-2020.8.19 | 2 ：Add_Two_Numbers | 两个单链表（每个节点值为从个位至高位的一个数）相加，输出结果为同格式单链表
-2020.8.18 | 1 ：Two_Sum | 数组中两个数之和等于目标数，每个数只能使用一次
+| date | difficulty | problems | summary |
+|---|---|---|---|
+2020.8.21 | medium | 32 : LongestValidParentheses | 统计字符串中连续有效最长闭合括号个数（双数）；
+2020.8.21 | medium | 3 : LongestSubstringWithoutRepeatingCharacters | 求字符串无重复子串最大长度
+2020.8.21 | medium | 5 : LongestPalindrome | 字符串中查找最大回文子串，使用动态规划方案，可配置检索方向、最小回文长度和缺省值
+2020.8.20 | medium | BinaryTreeTraversal | BFS DFS 二叉树的广度与深度遍历算法
+2020.8.19 | medium | 2 ：Add_Two_Numbers | 两个单链表（每个节点值为从个位至高位的一个数）相加，输出结果为同格式单链表
+2020.8.18 | easy | 1 ：Two_Sum | 数组中两个数之和等于目标数，每个数只能使用一次
 
