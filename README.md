@@ -36,6 +36,7 @@ com.sample.sort包下
 代码目录 https://github.com/jiek2529/java_algorithm/tree/master/src/com/sample/leetcode
 | date | difficulty | problems | summary |
 |---|---|---|---|
+2020.8.21 | easy | 111 : MinimumDepthOfBinaryTree | 查询二叉树叶最小深度
 2020.8.21 | hard | 19 : RemoveNthNodeRromEndOfList | 一趟扫描，删除链表的倒数第N个节点
 2020.8.21 | hard | 32 : LongestValidParentheses | 统计字符串中连续有效最长闭合括号个数（双数）；
 2020.8.21 | medium | 3 : LongestSubstringWithoutRepeatingCharacters | 求字符串无重复子串最大长度
