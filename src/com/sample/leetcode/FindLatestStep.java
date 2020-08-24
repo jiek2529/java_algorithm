@@ -89,44 +89,49 @@ public class FindLatestStep {
         private int solve_3(int[] arr, int m) {
             //满足条件的最后一步步数
             int result = -1;
-            int[] link = new int[arr.length + 1];//为匹配自然数 1开始
+            int arrLens = arr.length;
+            int[] link = new int[arrLens + 1];//为匹配自然数 1开始
             //满足条件的个数
             int count = 0;
-            for (int i = 0; i < arr.length; i++) {
-                int pos = arr[i];
+            int pos;
+            //连续串的首下标、连续串的尾下标
+            int lPos, rPos;
+            for (int i = 0; i < arrLens; i++) {
+                pos = arr[i];
                 link[pos] = pos;
 
-                {
-                    int lPos = pos, rPos = pos;
-                    //当前位置的前一位链头下标
-                    if (link[pos - 1] > 0) {
-                        //（前一位下标）减去（前链链头下标） 加1 等于 连续串长时，链长自己当前位置而减少一次满足条件
-                        if ((pos - 1) - link[pos - 1] + 1 == m) {
-                            count--;
-                        }
-                        //记录延长串后的左起下标
-                        lPos = link[pos - 1];
+                lPos = pos;
+                rPos = pos;
+                //当前位置的前一位链头下标
+                if (link[pos - 1] > 0) {
+                    //（前一位下标）减去（前链链头下标） 加1 等于 连续串长时，链长自己当前位置而减少一次满足条件
+                    //[当前下标]减去[前一位链头下标] 等于 前一位前方连续串的长度
+                    if (pos - link[pos - 1] == m) {
+                        count--;
                     }
-                    //右不越界时，link链长比 arr 多一位，所以条件加 <=
-                    if (pos + 1 <= arr.length && link[pos + 1] > 0) {
-                        //（（后链链尾下标）减去 后一位下标）加1 等于 连续串长时，链长自己当前位置而减少一次满足条件
-                        if (link[pos + 1] - (pos + 1) + 1 == m) {
-                            count--;
-                        }
-                        //记录延长串后的右尾下标
-                        rPos = link[pos + 1];
+                    //记录延长串后的左起下标
+                    lPos = link[pos - 1];
+                }
+                //右不越界时，link链长比 arr 多一位，所以条件加 <=
+                if (pos < arrLens && link[pos + 1] > 0) {
+                    //（（后链链尾下标）减去 后一位下标）加1 等于 连续串长时，链长自己当前位置而减少一次满足条件
+                    //[后一位链尾下标]减去[当前下标] 等于 后一位后方连续串的长度
+                    if (link[pos + 1] - pos == m) {
+                        count--;
                     }
+                    //记录延长串后的右尾下标
+                    rPos = link[pos + 1];
+                }
 
-                    if (lPos < rPos) {
+                if (lPos < rPos) {
 //                    修改延长后的新链头尾的下标
-                        link[lPos] = rPos;
-                        link[rPos] = lPos;
-                    }
+                    link[lPos] = rPos;
+                    link[rPos] = lPos;
+                }
 
 //                    如果新链满足链长，记数加一
-                    if (rPos - lPos + 1 == m) {
-                        count++;
-                    }
+                if (rPos - lPos + 1 == m) {
+                    count++;
                 }
 
 //                每一步完成时，记录满足条件的最后一次的步数
