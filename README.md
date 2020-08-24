@@ -36,6 +36,7 @@ com.sample.sort包下
 代码目录 https://github.com/jiek2529/java_algorithm/tree/master/src/com/sample/leetcode
 | date | difficulty | problems | summary |
 |---|---|---|---|
+2020.8.24 | medium | KMPSearch | 字符匹配，单个匹配结果与查询所有匹配结果 
 2020.8.23 | hard | LCP 14 : SplitArray | 切分数组，给定一个数组nums，将nums 切割成若干个非空子数组，使得每个子数组最左边的数和最右边的数的最大公约数大于 1 
 2020.8.22 | medium | PrimeNumbers | 筛法取范围内素数集，进阶：使用 bit 位存数据，节省32倍空间
 2020.8.21 | medium | 111 : MinimumDepthOfBinaryTree | 查询二叉树叶最小深度
