@@ -36,6 +36,7 @@ com.sample.sort包下
 代码目录 https://github.com/jiek2529/java_algorithm/tree/master/src/com/sample/leetcode
 | date | difficulty | problems | summary |
 |---|---|---|---|
+2020.9.8 | medium | FactocialZeroCount | 求n阶乘结果中尾数零的个数，将所有数因式分解出2的个数与5的个数，2*5=10产生一个0，因2的个数远多于5的个数，结果以5的个数就是结果。 
 2020.8.26 | hard | SplitArray | 使用 DP 动态规划实现切分数组；质数只计算1*10^6开方一千以内的，其余都是用除尽余数来判断。每个数可能有多个质数组成，分别也需要动态规划出最佳方案 
 2020.8.25 | hard | DP | 三种动态规划场景；1. 求数组中不相邻数和的最大值 递归与非递归 DP 2. 求一堆数中和为目标数的可能性 3. 求多任务时，赚钱最多钱
 2020.8.24 | hard | 5497 FindLatestStep | 查找大小为 M 的最新分组；使用新数组内维护链表下标，免排序算法
